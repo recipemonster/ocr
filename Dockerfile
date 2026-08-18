@@ -19,7 +19,9 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
     org.opencontainers.image.revision=$VCS_REF \
     org.opencontainers.image.source="https://github.com/recipemonster/recipemonster-ocr" \
     org.opencontainers.image.title="RecipeMonster OCR" \
-    org.opencontainers.image.version=$VERSION
+    org.opencontainers.image.version=$VERSION \
+    io.github.recipemonster.image.licenses.path="/usr/share/licenses/recipemonster-ocr" \
+    io.github.recipemonster.image.sbom.path="/var/lib/db/sbom"
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
