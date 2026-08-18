@@ -9,13 +9,11 @@ body = """
 {% else %}\
 ## Unreleased
 {% endif %}\
-{% for group, commits in commits | group_by(attribute="group") %}
-### {{ group | striptags | trim }}
+### Changes
 
-{% for commit in commits %}\
-- {{ commit.message | upper_first }}
+{% for commit in commits | filter(attribute="merge_commit", value=true) %}\
+- {% if commit.remote.pr_labels is containing("dependencies") %}chore(deps): {% endif %}{{ commit.remote.pr_title | trim }} (#{{ commit.remote.pr_number }})
 {% endfor %}\
-{% endfor %}
 """
 trim = true
 
@@ -25,13 +23,16 @@ filter_unconventional = false
 split_commits = false
 commit_parsers = [
   { message = "^chore\\(release\\)", skip = true },
-  { message = "^feat", group = "Added" },
-  { message = "^fix", group = "Fixed" },
+  { message = "^no changelog$", skip = true },
+  { message = "^feat", group = "Features" },
+  { message = "^fix", group = "Fixes" },
+  { message = "^chore", group = "Chores" },
   { message = "^docs", group = "Documentation" },
-  { message = "^refactor", group = "Changed" },
-  { message = "^test", group = "Testing" },
-  { message = "^ci", group = "Automation" },
-  { message = ".*", group = "Changed" },
+  { message = "^refactor", group = "Refactoring" },
+  { message = "^test", group = "Tests" },
+  { message = "^ci", group = "CI" },
+  { message = "^Bump", group = "Dependencies" },
+  { message = ".*", group = "Other" },
 ]
 filter_commits = false
 tag_pattern = "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:-rc[0-9]+)?$"

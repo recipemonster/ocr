@@ -8,6 +8,9 @@ updates:
       time: "04:45"
       timezone: Europe/Warsaw
     open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      include: scope
     groups:
       minor-and-patch:
         update-types:
@@ -22,6 +25,9 @@ updates:
       time: "05:15"
       timezone: Europe/Warsaw
     open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
     groups:
       base-images:
         patterns:
@@ -35,6 +41,9 @@ updates:
       time: "06:30"
       timezone: Europe/Warsaw
     open-pull-requests-limit: 10
+    commit-message:
+      prefix: chore
+      include: scope
     groups:
       actions:
         patterns:
