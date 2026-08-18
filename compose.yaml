@@ -1,0 +1,42 @@
+name: recipemonster-ocr
+
+services:
+  api-ocr:
+    image: ${OCR_IMAGE:-zot.ux.dc7.box/recipemonster/recipemonster-ocr:latest}
+    pull_policy: ${OCR_PULL_POLICY:-always}
+    environment:
+      HOME: /models/home
+      OCR_CPU_THREADS: ${OCR_CPU_THREADS:-12}
+      OCR_DETECTION_LIMIT: ${OCR_DETECTION_LIMIT:-1920}
+      OCR_DETECTION_MODEL: ${OCR_DETECTION_MODEL:-PP-OCRv6_small_det}
+      OCR_DEVICE: ${OCR_DEVICE:-auto}
+      OCR_ENABLE_MKLDNN: ${OCR_ENABLE_MKLDNN:-false}
+      OCR_HTTP_ADDRESS: 0.0.0.0:8080
+      OCR_LAYOUT_ENABLED: ${OCR_LAYOUT_ENABLED:-true}
+      OCR_LAYOUT_MODEL: ${OCR_LAYOUT_MODEL:-PP-DocLayout-S}
+      OCR_LAYOUT_THRESHOLD: ${OCR_LAYOUT_THRESHOLD:-0.55}
+      OCR_ALLOWED_IMAGE_ROOTS: ${OCR_ALLOWED_IMAGE_ROOTS:-/images}
+      OCR_MODEL_DIRECTORY: /models
+      OCR_RECOGNITION_MODEL: ${OCR_RECOGNITION_MODEL:-PP-OCRv6_small_rec}
+      PADDLE_OCR_BASE_DIR: /models/paddleocr
+      PADDLE_PDX_CACHE_HOME: /models/paddlex
+      PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK: "True"
+      XDG_CACHE_HOME: /models/cache
+    ports:
+      - "${OCR_BIND_ADDRESS:-127.0.0.1}:${OCR_HOST_PORT:-18084}:8080"
+    devices:
+      - nvidia.com/gpu=all
+    security_opt:
+      - label=disable
+    volumes:
+      - type: bind
+        source: ./aimodel
+        target: /models
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 80
+      start_period: 20m
+    init: true
+    restart: unless-stopped
