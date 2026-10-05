@@ -1,4 +1,4 @@
-FROM cgr.dev/chainguard/python:latest-dev@sha256:4c58eb78b47d5a7cee9ffe0d1df16c56778ee40b067d983fb48d677a035abf8c AS python
+FROM cgr.dev/chainguard/python:latest-dev@sha256:82943d7c508865fa97d15d129d524991100e66a8f89450233704d4ea70accd95 AS python
 
 USER 0
 RUN uv python install --install-dir /opt/python --no-bin --no-progress 3.12.13 \
@@ -7,7 +7,7 @@ RUN uv python install --install-dir /opt/python --no-bin --no-progress 3.12.13 \
         /opt/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/site-packages/pip* \
         /opt/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/site-packages/setuptools*
 
-FROM cgr.dev/chainguard/wolfi-base:latest@sha256:30f03343947c7ae3581fda727a6e2aa7b8ce7009b7bfc2ab8d5c9483ace5812f
+FROM cgr.dev/chainguard/wolfi-base:latest@sha256:9c2092b053779e14c82fb50f77b37bcc38b7d2c83972352d5813280f9d035b03
 
 ARG BUILD_DATE
 ARG VERSION=dev
